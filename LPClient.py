@@ -1,9 +1,11 @@
 import socket   
 import sys
 import json
+import tornado.websocket
+from tornado import gen 
 
 class LeapMotionClient(object):
-    def __init__(self):
+    def __init__(self, host, port):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error:
@@ -14,8 +16,8 @@ class LeapMotionClient(object):
         #killing your server:
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        host = 'localhost';
-        port = 8124;
+        #host = 'localhost';
+        #port = 8124;
         self.sock.connect((host , port))
         print('Socket Connected to ' + host + ' on port ', port)
 
@@ -30,6 +32,24 @@ class LeapMotionClient(object):
             sys.exit()
         print('Message sent successfully')
 
+class LeapMotionWSClient(object):
+    def __init__(self, host, port):
+        try:
+            tornado.ioloop.IOLoop.instance().run_sync(lambda: self.create_client(host, port))
+        except socket.error:
+            print('Failed to create socket')
+            sys.exit()
+
+    @gen.coroutine
+    def create_client(self, host, port):
+        self.sock = yield tornado.websocket.websocket_connect("ws://{0}:{1}/".format(host, port))
+
+    @gen.coroutine
+    def send(self, data):
+        self.sock.write_message(data)
+
+
+
 #Now receive data
 #data = [] 
 
@@ -42,7 +62,9 @@ class LeapMotionClient(object):
 
 #print("".join(data))
 
-client = LeapMotionClient()
+client = LeapMotionWSClient('localhost', 8888)
 data = {1:2,3:4}
 send_data = json.dumps(data)
-client.send(send_data)
+while(1):    
+    client.send(send_data)
+    sys.stdin.readline()

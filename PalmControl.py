@@ -1,6 +1,7 @@
 import math
 import Leap
 import json
+import LPClient
 
 class PalmControlListener(Leap.Listener):
 	def __init__(self):
@@ -36,7 +37,7 @@ class PalmControlListener(Leap.Listener):
 			velocity = hand.palm_velocity
 			cmd_dict = {'connectionType': "DATASOURCE", action': 'explore', 'normal_x': normal.x, 'normal_y': normal.y, 'normal_z': normal.z, 'velocity_x': velocity.x, 'velocity_y': velocity.y, 'velocity_z': velocity.z}
 			send_data = json.dumps(cmd_dict)
-			send_data = send_data + '&'
+			send_data += '&'
 			print send_data
 
 	def two_hand_gesture_recognition(self, left_hand):
