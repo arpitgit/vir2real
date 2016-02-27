@@ -3,7 +3,9 @@ import Leap
 from PalmControl import PalmControlListener
 
 def main():
-	listener = PalmControlListener()
+	host = "localhost"
+	port = 8888
+	listener = PalmControlListener(host, port)
 	controller = Leap.Controller()
 	controller.set_policy(controller.POLICY_BACKGROUND_FRAMES)
 	controller.add_listener(listener)

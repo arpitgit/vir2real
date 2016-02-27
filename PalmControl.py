@@ -1,11 +1,12 @@
 import math
 import Leap
 import json
-import LPClient
+from LPClient import LeapMotionWSClient
 
 class PalmControlListener(Leap.Listener):
-	def __init__(self):
+	def __init__(self, host, port):
 		super(PalmControlListener, self).__init__()
+		self.client = LeapMotionWSClient(host, port)
 
 	def on_init(self, controller):
 		print "Initialized"
@@ -35,10 +36,11 @@ class PalmControlListener(Leap.Listener):
 		if hand.grab_strength < 1:
 			normal = hand.palm_normal
 			velocity = hand.palm_velocity
-			cmd_dict = {'connectionType': "DATASOURCE", action': 'explore', 'normal_x': normal.x, 'normal_y': normal.y, 'normal_z': normal.z, 'velocity_x': velocity.x, 'velocity_y': velocity.y, 'velocity_z': velocity.z}
+			cmd_dict = {'connectionType': "DATASOURCE", 'action': 'explore', 'normal_x': normal.x, 'normal_y': normal.y, 'normal_z': normal.z, 'velocity_x': velocity.x, 'velocity_y': velocity.y, 'velocity_z': velocity.z}
 			send_data = json.dumps(cmd_dict)
-			send_data += '&'
-			print send_data
+			#send_data += '&'
+			self.client.send(send_data)
+			#print send_data
 
 	def two_hand_gesture_recognition(self, left_hand):
 		pass

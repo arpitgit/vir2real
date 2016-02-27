@@ -62,9 +62,9 @@ class LeapMotionWSClient(object):
 
 #print("".join(data))
 
-client = LeapMotionWSClient('localhost', 8888)
-data = {1:2,3:4}
-send_data = json.dumps(data)
-while(1):    
-    client.send(send_data)
-    sys.stdin.readline()
+#client = LeapMotionWSClient('localhost', 8888)
+#data = {1:2,3:4}
+#send_data = json.dumps(data)
+#while(1):    
+#    client.send(send_data)
+#    sys.stdin.readline()
