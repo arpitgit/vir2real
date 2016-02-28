@@ -12,11 +12,11 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     clients = []
     def open(self):
         print 'New connection'
-        self.write_message("Hello user")
+        #self.write_message("Hello user")
         WSHandler.clients.append(self)
 
     def on_message(self, message):
-        print 'Message received: %s' % message
+        #print 'Message received: %s' % message
         WSHandler.write_to_clients(message)
 
     def on_close(self):
@@ -25,7 +25,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
     @classmethod
     def write_to_clients(cls, message):
-        print "Writing message to all clients"
+        #print "Writing message to all clients"
         for client in cls.clients:
             client.write_message(message)
 
@@ -36,7 +36,7 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(8888)
+    http_server.listen(9999)
     #tornado.ioloop.IOLoop.instance().add_timeout(datetime.timedelta(seconds=10), WSHandler.write_to_clients)
     tornado.ioloop.IOLoop.instance().start()
     #signal.signal(signal.SIGINT, signal_handler)

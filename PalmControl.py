@@ -38,5 +38,5 @@ class PalmControlListener(Leap.Listener):
 			#send_data += '&'
 			self.client.send(send_data)
 
-	def two_hand_gesture_recognition(self, left_hand):
+	def two_hand_gesture_recognition(self, left_hand, right_hand):
 		pass
